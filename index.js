@@ -49,6 +49,23 @@ server.delete('/api/accounts/:id', async (req, res) => {
   }
 });
 
+// MIDDLEWARE
+async function validateAccountID(req, res, next) {
+  const id = req.params.id;
+  if (!id) return res.status(400).json({ message: "Please provide an ID" });
+  try {
+    const account = await db('accounts').where({id}).first();
+    account
+      ? () => {
+        req.account = account;
+        next();
+      } 
+      : res.status(400).json({ message: "Invalid ID" });
+  } catch(error) {
+    res.status(500).json({ errorMessage: "Unable to validate id", error});
+  }
+}
+
 server.listen(PORT, () => {
   console.log(`Listening on port ${PORT}...`);
 });
