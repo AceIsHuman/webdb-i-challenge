@@ -61,14 +61,12 @@ async function validateAccountID(req, res, next) {
   try {
     const account = await db('accounts').where({id}).first();
     account
-      ? () => {
-        req.account = account;
-        next();
-      } 
+      ? req.account = account
       : res.status(400).json({ message: "Invalid ID" });
-  } catch(error) {
-    res.status(500).json({ errorMessage: "Unable to validate id", error});
-  }
+    } catch(error) {
+      res.status(500).json({ errorMessage: "Unable to validate id", error});
+    }
+    next();
 }
 
 server.listen(PORT, () => {
