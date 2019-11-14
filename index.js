@@ -15,6 +15,11 @@ server.get('/api/accounts', async (req, res) => {
   }
 });
 
+// GET ACCOUNT BY ID
+server.get('/api/accounts/:id', validateAccountID, (req, res) => {
+  return res.status(200).json(req.account);
+});
+
 // ADD A NEW ACCOUNT
 server.post('/api/accounts', async (req, res) => {
   try {
