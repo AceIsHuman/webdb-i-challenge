@@ -15,6 +15,16 @@ server.get('/api/accounts', async (req, res) => {
   }
 });
 
+// ADD A NEW ACCOUNT
+server.post('/api/accounts', async (req, res) => {
+  try {
+    const id = await db('accounts').insert(req.body);
+    res.status(200).json(id);
+  } catch(err) {
+    res.status(500).json({ errorMessage: 'Internal Server Error' });
+  }
+});
+
 server.listen(PORT, () => {
   console.log(`Listening on port ${PORT}...`);
 });
