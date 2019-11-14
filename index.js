@@ -25,6 +25,17 @@ server.post('/api/accounts', async (req, res) => {
   }
 });
 
+// UPDATE AN ACCOUNT
+server.put('/api/accounts/:id', async (req, res) => {
+  const id = req.params.id;
+  try {
+    const success = await db('accounts').where({id}).update(req.body);
+    res.status(200).json(success);
+  } catch(err) {
+    res.status(500).json({ errorMessage: 'Internal Server Error' });
+  }
+})
+
 server.listen(PORT, () => {
   console.log(`Listening on port ${PORT}...`);
 });
