@@ -34,7 +34,20 @@ server.put('/api/accounts/:id', async (req, res) => {
   } catch(err) {
     res.status(500).json({ errorMessage: 'Internal Server Error' });
   }
-})
+});
+
+// DELETE AN ACCOUNT
+server.delete('/api/accounts/:id', async (req, res) => {
+  const id  = req.params.id;
+  try {
+    const success = await db('accounts').where({id}).del();
+    success
+      ? res.status(204).end()
+      : res.status(400).json({ message: "Invalid ID" });
+  } catch(err) {
+    res.status(500).json({ errorMessage: 'Internal Server Error' });
+  }
+});
 
 server.listen(PORT, () => {
   console.log(`Listening on port ${PORT}...`);
